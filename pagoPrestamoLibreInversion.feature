@@ -1,13 +1,13 @@
 Feature: yo
-         como clinte activo del banco
+         como cliente activo del banco
          Quiero poder simular un credito con pagos fijos de manera online
          para evitar filas en el banco
 
   Scenario Outline: calcular cuota fija de prestamo
     Given el banco ofrece una tasa de <interes> % de interes anual
-    When el cliente solicita un prestamo por <monto> pesos
-    And quiere pagarlo a <cuotas> meses
-    Then el cliente debera pagar <pago_mensual> pesos mesuales
+    When el cliente solicita un prestamo por $<monto> 
+    And quiere pagarlo a <cuotas> cuotas mensules
+    Then el cliente debera pagar $<pago_mensual> pesos mesuales
     Examples:
       | monto   | interes | cuotas | pago_mensual |
       | 5000000 | 10      | 12     | 439579.44    |
@@ -20,7 +20,7 @@ Feature: yo
     And  ha pagado <cuotas_pagadas>
     When el cliente quiera refinanciar su prestamo
     And pida al banco reficanciar la deuda a <plazo_nuevo> cuotas menuales
-    Then el banco le otorgaara <periodos_gracia> meses de gracia
+    Then el banco le otorgara <periodos_gracia> meses de gracia
     And el cliente tendra que pagar $<cuota_refinanciada> mensuales por <plazo_nuevo> meses
     Examples:
       | monto_inicial | periodos | interes | cuotas_pagadas | plazo_nuevo | periodos_gracia | cuota_refinanciada |
