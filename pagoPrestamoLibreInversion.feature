@@ -8,7 +8,7 @@ Feature: yo
     When el cliente seleccione el prestamo en la lista de productos
     Then se debe abrir el formulario de pago virtual
 
-  Scenario : pagar cuota sin abono a capital
+  Scenario: pagar cuota sin abono a capital
     When el cliente ingrese el monto a pagar y el metodo de pago
     And el cliente deje en blanco el checkbox "abono a capital"
     And  el cliente presione el boton "pagar"
