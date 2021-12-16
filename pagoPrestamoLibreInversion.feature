@@ -1,22 +1,29 @@
 Feature: yo
-         como clinte activo del banco y con un credito de libre inversion
-         Quiero  pagar mi cuota de manera online para evitar filas en el banco
+         como clinte activo del banco
+         Quiero poder simular un credito con pagos fijos de manera online
+         para evitar filas en el banco
 
-  Background: ingreso a ventanilla virtual de pagos
-    Given el cliente se ha autenticado en la aplicacion web
-    And el cliente ha entrado a la ventanilla virtual de pagos
-    When el cliente seleccione el prestamo en la lista de productos
-    Then se debe abrir el formulario de pago virtual
+  Scenario Outline: calcular cuota fija de prestamo
+    Given el banco ofrece una tasa de <interes> % de interes anual
+    When el cliente solicita un prestamo por <monto> pesos
+    And quiere pagarlo a <cuotas> meses
+    Then el cliente debera pagar <pago_mensual> pesos mesuales
+    Examples:
+      | monto   | interes | cuotas | pago_mensual |
+      | 5000000 | 10      | 12     | 439579.44    |
+      | 5000000 | 10      | 24     | 230724.63    |
+      | 2500000 | 10      | 16     | 167547.26    |
 
-  Scenario: pagar cuota sin abono a capital
-    When el cliente ingrese el monto a pagar y el metodo de pago
-    And el cliente deje en blanco el checkbox "abono a capital"
-    And  el cliente presione el boton "pagar"
-    Then se deberá mostrar en pantalla "pago exitoso"
 
-  Scenario: pagar cuota con abono a capital
-    When el cliente ingrese el monto a pagar y el metodo de pago
-    And el cliente seleccione el checkbox "abono a capital"
-    And el cliente ingrese el monto de abono a capital
-    And  el cliente presione el boton "pagar"
-    Then se deberá mostrar en pantalla "pago exitoso con abono"
+  Scenario Outline: refinanciar prestamo
+    Given el cliente tiene un pestamo por $ <monto_inicial>, a <periodos> cuotas mensuales con interes de <interes>%
+    And  ha pagado <cuotas_pagadas>
+    When el cliente quiera refinanciar su prestamo
+    And pida al banco reficanciar la deuda a <plazo_nuevo> cuotas menuales
+    Then el banco le otorgaara <periodos_gracia> meses de gracia
+    And el cliente tendra que pagar $<cuota_refinanciada> mensuales por <plazo_nuevo> meses
+    Examples:
+      | monto_inicial | periodos | interes | cuotas_pagadas | plazo_nuevo | periodos_gracia | cuota_refinanciada |
+      | 5000000       | 12       | 10      | 6              | 12          | 3               | 230939.14          |
+      | 5000000       | 24       | 10      | 12             | 20          | 2               | 145395.52          |
+      | 2500000       | 16       | 10      | 8              | 18          | 1               | 78208.80           |
